@@ -9,7 +9,6 @@ router.get('/', function(req, res) {
             res.end();
             return;
         }
-        console.log(allOrders);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(allOrders));
     })
