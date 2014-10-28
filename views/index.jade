@@ -1,6 +1,52 @@
 extends layout
-
 block content
-  div.container
-    h1= title
-    p Welcome to #{title}
+    script.
+        // DOM Ready =============================================================
+        $(document).ready(function() {
+            // Populate the user table on initial page load
+            mockPopulate();
+        });
+                // Functions =============================================================
+                // Fill table with data
+        function populateTable() {
+            // Empty content string
+            var tableContent = '';
+            // jQuery AJAX call for JSON
+            $.getJSON( '/order', function( data ) {
+                // For each item in our JSON, add a table row and cells to the content string
+                $.each(data, function(){
+                    tableContent += '<tr>';
+                    tableContent += '<td>' + this._id + '</td>';
+                    tableContent += '<td>' + this.date + '</td>';
+                    tableContent += '<td>' + this.name + '</td>';
+                    tableContent += '<td>' + this.address + '</td>';
+                    tableContent += '</tr>';
+                });
+                        // Inject the whole content string into our existing HTML table
+                $('#orderViewer table tbody').html(tableContent);
+            });
+        }
+        function mockPopulate() {
+            var tableContent = "";
+            for(var i = 0; i < 10; i++){
+                tableContent += '<tr>';
+                tableContent += '<td>' + "ID" + i + '</td>';
+                tableContent += '<td>' + "Date" + i + '</td>';
+                tableContent += '<td>' + "Name" + i + '</td>';
+                tableContent += '<td>' + "Address" + i + '</td>';
+                tableContent += '</tr>';
+            }
+            $('#orderViewer table tbody').html(tableContent);
+        }
+    div.container
+        div
+            h1= title
+        #orderViewer
+            table.table.table-striped.table-hover
+                thead
+                    th ID
+                    th Date
+                    th Name
+                    th Address
+                tbody
+        // /USER LIST
