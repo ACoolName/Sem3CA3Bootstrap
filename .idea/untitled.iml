@@ -11,6 +11,9 @@
     <orderEntry type="library" name="should-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="jQuery-2.0.0" level="application" />
     <orderEntry type="library" name="mongoViewer node_modules" level="project" />
+    <orderEntry type="library" name="express-session-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="mongoose-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="mongodb-DefinitelyTyped" level="application" />
   </component>
 </module>
 
