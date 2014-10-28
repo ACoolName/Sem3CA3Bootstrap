@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' );
 
 //var dbURI = 'mongodb://localhost/joke';
 //Please change this to your own DB
-var dbURI = 'mongodb://localhost/northwind';
+var dbURI = 'mongodb://test:test@ds063879.mongolab.com:63879/testraulstelescu';
 mongoose.connect(dbURI);
 
 var model = require('../database/model.js');
