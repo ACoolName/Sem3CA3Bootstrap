@@ -1,0 +1,25 @@
+extends layout
+block content
+    div.container
+        h1= title
+    div
+        p ID:
+        p Date:
+        p Required:
+        p Shipped:
+    div
+        p Name:
+        p Address:
+        p City:
+        p Zip:
+        p Country:
+    div
+        #products
+            table(class="table table-striped table-hover")
+                thead
+                    th Product
+                    th Unit Price
+                    th Quantity
+                    th Discount
+                    th Price
+                tbody
