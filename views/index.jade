@@ -13,10 +13,17 @@ block content
             var tableContent = '';
             // jQuery AJAX call for JSON
             $.getJSON( '/order', function( data ) {
-                // For each item in our JSON, add a table row and cells to the content string
+                function compare(a,b) {
+                if (a._id > b._id)
+                    return -1;
+                if (a._id < b._id)
+                    return 1;
+                return 0;
+                }
+                data.sort(compare);
                 $.each(data, function(){
                     tableContent += '<tr>';
-                    tableContent += '<td>' + this._id + '</td>';
+                    tableContent += '<td><a href="page.html">' + this._id + '</a></td>';
                     tableContent += '<td>' + this.orderDate + '</td>';
                     tableContent += '<td>' + this.shipName + '</td>';
                     tableContent += '<td>' + this.shipAddress + '</td>';
@@ -41,8 +48,9 @@ block content
     div.container
         div
             h1= title
+        div
         #orderViewer
-            table.table.table-striped.table-hover
+            table(class="table table-striped table-hover")
                 thead
                     th ID
                     th Date
