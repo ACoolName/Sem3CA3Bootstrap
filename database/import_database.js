@@ -2,7 +2,7 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var model = require('./model');
 
-var dbUrl = "mongodb://localhost/northwind";
+var dbUrl = "mongodb://test:test@ds063879.mongolab.com:63879/testraulstelescu";
 
 
 function readData(path) {
