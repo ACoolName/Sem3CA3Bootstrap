@@ -28,7 +28,9 @@ block content
             //each piece of info will be a paragraph handled in the javascript
             //the paragraphs will be "hard coded" p1 = "ID: " + data.id;
             //gl hf
+            var total =0;
                 $.each(data.orderDetails, function(index, value){
+                total += (value.unitPrice - value.unitPrice * value.discount) * value.quantity;
                     tableContent += '<tr>';
                     tableContent += '<td>' + data.products[value.productId].name + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
                     tableContent += '<td>' + value.unitPrice.toFixed(2) + '</td>';
@@ -37,6 +39,13 @@ block content
                     tableContent += '<td>' + ((value.unitPrice - value.unitPrice * value.discount) * value.quantity).toFixed(2) + '</td>';
                     tableContent += '</tr>';
                 });
+                tableContent+='<tr>';
+                tableContent+='<td>'+ 'Total:'+'</td>';
+                tableContent+='<td> </td>';
+                tableContent+='<td> </td>';
+                tableContent+='<td> </td>';
+                tableContent+='<td>'+ total.toFixed(2)+' </td>';
+                tableContent+='</tr>';
                 $('#products table tbody').html(tableContent);
             });
         }
