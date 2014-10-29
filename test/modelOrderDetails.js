@@ -1,6 +1,6 @@
 var should = require('should');
 var db = require('../models/db');
-var OrderDetails = require('../models/orderdetails');
+var OrderDetails = require('../models/orderDetails');
 
 describe('Order Details Model Helper Class', function () {
     describe('getAllOrderDetails', function () {
