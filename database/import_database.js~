@@ -1,9 +1,8 @@
 var fs = require('fs');
 var mongoose = require('mongoose');
 var model = require('./model');
-var async = require('async');
 
-var dbUrl = "mongodb://test:test@ds063879.mongolab.com:63879/testraulstelescu";
+var dbUrl = "mongodb://localhost/northwind";
 
 
 function readData(path) {
@@ -148,36 +147,39 @@ var done = [0,0,0,0,0,0];
 
 
 function closeDatabase() {
-    //for(var i = 0; i < done.length; i++) {
-    //    if(done[i] == 0) {
-    //        return;
-    //    }
-    //}
+    for(var i = 0; i < done.length; i++) {
+        if(done[i] == 0) {
+            return;
+        }
+    }
     db.connection.close();
 }
 
-var asyncTasks = [];
-
-function addData(data, dataModel) {
-    data.forEach(function(item){
-        asyncTasks.push(function(callback){
-            var element = new dataModel(item);
-            element.save(function(err, order) {
-                if(err) console.log(err);
-                callback();
-            });
+function addData(data, dataModel, doneIndex) {
+    //console.log(data);
+    var count = 0;
+    data.forEach(function(e) {
+        var element = new dataModel(e);
+        element.save(function(err, order) {
+            if(err) console.log(err);
+            count++;
+            if(count >= data.length) {
+                done[doneIndex] = true;
+                closeDatabase()
+            }
         });
     });
 }
 
 
-addData(getCategories(), model.CategoryModel);
-addData(getProducts(), model.ProductModel);
-addData(getEmployees(), model.EmployeeModel);
-addData(getCustomers(), model.CustomerModel);
-addData(getOrders(), model.OrderModel);
-addData(getOrderDetails(), model.DetailsModel);
+addData(getOrders(), model.OrderModel, 0);
+addData(getOrderDetails(), model.DetailsModel, 1);
+addData(getProducts(), model.ProductModel, 2);
+addData(getEmployees(), model.EmployeeModel, 3);
+addData(getCustomers(), model.CustomerModel, 4);
+addData(getCategories(), model.CategoryModel, 5);
 
-async.series(asyncTasks, function(){
-    closeDatabase();
-});
+
+
+
+
