@@ -18,11 +18,14 @@ block content
                 $("#date").text("Date: " + data.order.orderDate);
                 $("#requ").text("Required: " + data.order.requiredDate);
                 $("#ship").text("Shipped: " + data.order.shippedDate);
-                $("#employee").text(data.employee.firstName + ' ' + data.employee.lastName).prop('href','/employee/' + data.employee._id);
-                $("#name").text(data.customer.companyName).prop('href','/customers/' + data.customer._id);
-                $("#addr").text("Address: " + data.customer.address)
-                $("#zip").text("Post Code: " + data.customer.postalCode);
-                $("#country").text("Country: " + data.customer.country);
+                if(data.employee)       //protection against database fuckups where the employee would be null
+                    $("#employee").text(data.employee.firstName + ' ' + data.employee.lastName).prop('href','/employee/' + data.employee._id);
+                if(data.customer){      //protection against database fuckups where the customer would be null
+                    $("#name").text(data.customer.companyName).prop('href','/customers/' + data.customer._id);
+                    $("#addr").text("Address: " + data.customer.address)
+                    $("#zip").text("Post Code: " + data.customer.postalCode);
+                    $("#country").text("Country: " + data.customer.country);
+                }
 
             //solution: get all the info from the data
             //each piece of info will be a paragraph handled in the javascript
