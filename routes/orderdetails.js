@@ -3,38 +3,41 @@ var router = express.Router();
 var OrderDetails = require('../models/orderDetails');
 var Order = require('../models/orders');
 var Customer = require('../models/customer');
+var Product = require('../models/product');
+var Employee = require('../models/employee');
+var errorHandler = require('../helperClasses/errorHandler');
 
-router.get('/:id', function(req, res) {
-    var orderId = Number(req.params.id);
+router.get('/:id', function (req, res) {
+    var orderId = req.params.id;
     Order.getOrder(orderId, function (err, o) {
-        if (err) {
-            res.status(500).send({status: 500, message: err.message, type: 'internal'});
-            res.end();
-            return;
-        } else if(!o) {
+        if (!errorHandler.errorHandle(err, res)) return;
+        if (!o) {
             res.status(404).send({status: 404, message: "Object not found", type: 'Not Found'});
             res.end();
             return;
         }
         OrderDetails.getOrderDetailsByOrderId(orderId, function (err, orderDetails) {
-            if (err) {
-                res.status(500).send({status: 500, message: err.message, type: 'internal'});
-                res.end();
-                return;
-            }
+            if (!errorHandler.errorHandle(err, res)) return;
             Customer.getCustomer(o.customerId, function (err, c) {
-                if (err) {
-                    res.status(500).send({status: 500, message: err.message, type: 'internal'});
-                    res.end();
-                    return;
-                }
-                var fullOrder = {
-                    customer: c,
-                    order: o,
-                    orderDetails: orderDetails
-                };
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(fullOrder));
+                if (!errorHandler.errorHandle(err, res)) return;
+                var productIds = orderDetails.map(function (element) {
+                    return element.productId;
+                });
+                productIds = { "$in": productIds};
+                Product.getAllProducts(productIds, function (err, products) {
+                    if (!errorHandler.errorHandle(err, res)) return;
+                    Employee.getEmployee(o.employeeId, function (err, employee) {
+                        var fullOrder = {
+                            customer: c,
+                            order: o,
+                            orderDetails: orderDetails,
+                            products: products,
+                            employee: employee
+                        };
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify(fullOrder));
+                    });
+                });
             });
         });
     });

@@ -1,29 +1,7 @@
-function createSearchAllFunc(object) {
-    return function (callback) {
-        object.find({}, function (err, entities) {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, entities);
-        });
-    };
-}
-
-function createSearchOneWithIdFunc(object) {
-    return function (id, callback) {
-        object.findOne({_id: id}, function (err, entity) {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, entity);
-        });
-    };
-}
-
-function createSearchOneFunc(object, searchByName) {
+function createFindOneFunc(object, searchByName) {
     return function (id, callback) {
         var condition = {};
-        condition[searchByName] = id;
+        condition[searchByName || "_id"] = id;
         object.findOne(condition, function (err, entity) {
             if (err) {
                 return callback(err);
@@ -33,10 +11,16 @@ function createSearchOneFunc(object, searchByName) {
     };
 }
 
-function createSearchSeveralFunc(object, searchByName) {
-    return function (id, callback) {
+function createFindFunc(object, searchByName) {
+    return function (callbackOrId, callback) {
         var condition = {};
-        condition[searchByName] = id;
+        console.log(callbackOrId);
+        if (callback) {
+            condition[searchByName || "_id"] = callbackOrId;
+        } else {
+            callback = callbackOrId;
+        }
+        console.log(condition);
         object.find(condition, function (err, entities) {
             if (err) {
                 return callback(err);
@@ -47,8 +31,6 @@ function createSearchSeveralFunc(object, searchByName) {
 }
 
 module.exports = {
-    createSearchAllFunc: createSearchAllFunc,
-    createSearchOneWithIdFunc: createSearchOneWithIdFunc,
-    createSearchOneFunc: createSearchOneFunc,
-    createSearchSeveralFunc: createSearchSeveralFunc
+    createFindOneFunc: createFindOneFunc,
+    createFindFunc: createFindFunc
 };

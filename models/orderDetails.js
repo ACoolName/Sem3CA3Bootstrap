@@ -3,6 +3,6 @@ var abs = require('./abstractSearch');
 var OrderDetails = mongoose.model('orderdetails');
 
 module.exports = {
-    getAllOrderDetails: abs.createSearchAllFunc(OrderDetails),
-    getOrderDetailsByOrderId: abs.createSearchSeveralFunc(OrderDetails, "orderId")
+    getAllOrderDetails: abs.createFindFunc(OrderDetails),
+    getOrderDetailsByOrderId: abs.createFindFunc(OrderDetails, "orderId")
 }
