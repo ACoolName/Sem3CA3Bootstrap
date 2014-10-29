@@ -3,6 +3,6 @@ var mongoose = require('mongoose');
 var Order = mongoose.model('orders');
 
 module.exports = {
-    getAllOrders: abs.createSearchAllFunc(Order),
-    getOrder: abs.createSearchOneWithIdFunc(Order)
+    getAllOrders: abs.createFindFunc(Order),
+    getOrder: abs.createFindOneFunc(Order)
 }
