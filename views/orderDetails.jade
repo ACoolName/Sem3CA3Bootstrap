@@ -19,8 +19,8 @@ block content
                 $("#date").text("Date: " + data.order.orderDate);
                 $("#requ").text("Required: " + data.order.requiredDate);
                 $("#ship").text("Shipped: " + data.order.shippedDate);
-                $("#name").text("Name: <a href='customers/" + data.customer._id + ""'>" + data.customer.companyName + "</a>");
-                $("#addr").text("Address: " + data.customer.address);
+                $("#name").text(data.customer.companyName).prop('href','/customers/'+data.customer._id);
+                $("#addr").text("Address: " + data.customer.address)
                 $("#zip").text("Post Code: " + data.customer.postalCode);
                 $("#country").text("Country: " + data.customer.country);
             //solution: get all the info from the data
@@ -52,7 +52,9 @@ block content
         p(id="requ")
         p(id="ship")
     div
-        p(id="name")
+        p
+            |Name:
+            a(id="name" href='#')
         p(id="addr")
         p(id="city")
         p(id="zip")
