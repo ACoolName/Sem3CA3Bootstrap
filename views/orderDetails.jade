@@ -1,18 +1,64 @@
 extends layout
 block content
+    script.
+        // DOM Ready =============================================================
+        $(document).ready(function() {
+            // Populate the user table on initial page load
+            fillDetails();
+        });
+                // Functions =============================================================
+                // Fill table with data
+        function fillDetails() {
+            // Empty content string
+            var tableContent = '';
+            // jQuery AJAX call for JSON
+            var path = window.location.pathname.split('/');
+            $.getJSON( '/orderdetails/' + path[2], function( data ) {     //i need to somehow get the id in here
+                console.log(data.toString());
+                $("#ID").text("ID: " + data.order._id);
+                $("#date").text("Date: " + data.order.orderDate);
+                $("#requ").text("Required: " + data.order.requiredDate);
+                $("#ship").text("Shipped: " + data.order.shippedDate);
+                $("#name").text("Name: " + data.customer.companyName);
+                $("#addr").text("Address: " + data.customer.address);
+                $("#zip").text("Post Code: " + data.customer.postalCode);
+                $("#country").text("Country: " + data.customer.country);
+            //solution: get all the info from the data
+            //each piece of info will be a paragraph handled in the javascript
+            //the paragraphs will be "hard coded" p1 = "ID: " + data.id;
+            //gl hf
+
+
+                $.each(data.orderDetails, function(index, value){
+                    tableContent += '<tr>';
+                    tableContent += '<td>' + value.productId + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
+                    tableContent += '<td>' + value.unitPrice.toFixed(2) + '</td>';
+                    tableContent += '<td>' + value.quantity + '</td>';
+                    tableContent += '<td>' + value.discount.toFixed(2) + '</td>';
+                    tableContent += '<td>' + ((value.unitPrice - value.unitPrice * value.discount) * value.quantity).toFixed(2) + '</td>';
+                    tableContent += '</tr>';
+                });
+                $('#products table tbody').html(tableContent);
+            });
+        }
+        function goBack() {
+            window.history.back();
+        }
     div.container
         h1= title
     div
-        p ID:
-        p Date:
-        p Required:
-        p Shipped:
+        p(id="ID")
+        p(id="date")
+        p(id="requ")
+        p(id="ship")
     div
-        p Name:
-        p Address:
-        p City:
-        p Zip:
-        p Country:
+        p(id="name")
+        p(id="addr")
+        p(id="city")
+        p(id="zip")
+        p(id="country")
+    div
+        button(onclick='goBack()') Back
     div
         #products
             table(class="table table-striped table-hover")
@@ -23,3 +69,5 @@ block content
                     th Discount
                     th Price
                 tbody
+
+

@@ -23,7 +23,7 @@ block content
                 data.sort(compare);
                 $.each(data, function(){
                     tableContent += '<tr>';
-                    tableContent += '<td><a href="page.html">' + this._id + '</a></td>';
+                    tableContent += '<td><a href="order/' + this._id + '">' + this._id + '</a></td>';
                     tableContent += '<td>' + this.orderDate + '</td>';
                     tableContent += '<td>' + this.shipName + '</td>';
                     tableContent += '<td>' + this.shipAddress + '</td>';

@@ -4,14 +4,14 @@ var OrderDetails = require('../models/orderDetails');
 var Order = require('../models/orders');
 var Customer = require('../models/customer');
 
-router.get('/:id', function(req, res) {
+router.get('/:id', function (req, res) {
     var orderId = Number(req.params.id);
     Order.getOrder(orderId, function (err, o) {
         if (err) {
             res.status(500).send({status: 500, message: err.message, type: 'internal'});
             res.end();
             return;
-        } else if(!o) {
+        } else if (!o) {
             res.status(404).send({status: 404, message: "Object not found", type: 'Not Found'});
             res.end();
             return;
