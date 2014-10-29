@@ -19,7 +19,7 @@ block content
                 $("#date").text("Date: " + data.order.orderDate);
                 $("#requ").text("Required: " + data.order.requiredDate);
                 $("#ship").text("Shipped: " + data.order.shippedDate);
-                $("#name").text("Name: " + data.customer.companyName);
+                $("#name").text("Name: <a href='customers/" + data.customer._id + ""'>" + data.customer.companyName + "</a>");
                 $("#addr").text("Address: " + data.customer.address);
                 $("#zip").text("Post Code: " + data.customer.postalCode);
                 $("#country").text("Country: " + data.customer.country);

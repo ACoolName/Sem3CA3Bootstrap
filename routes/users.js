@@ -18,7 +18,7 @@ router.get('/:id', function (req, res) {
     });
 });
 
-router.get('/getuser/:id', function (req, res) {
+router.get('/getcustomer/:id', function (req, res) {
     var customerId = req.params.id;
     Customer.getCustomer(customerId, function (err, c) {
         if (err) {

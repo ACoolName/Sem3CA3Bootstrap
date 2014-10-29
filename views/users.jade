@@ -9,7 +9,7 @@ block content
         var ar = document.URL.split('/');
         var id = ar[ar.length-1];
 
-        $.getJSON('getuser/'+id,function (data){
+        $.getJSON('getcustomer/'+id,function (data){
             var add="";
             add+="<tr>";
             add+="<td>Name: </td>";
@@ -58,7 +58,9 @@ block content
 
             $('#user table tbody').html(add);
         })
-
+        }
+        function goBack() {
+            window.history.back();
         }
 
     .container
@@ -73,3 +75,5 @@ block content
                             #user
                                 table.table.table-user-information
                                     tbody
+    div
+        button(onclick='goBack()') Back
