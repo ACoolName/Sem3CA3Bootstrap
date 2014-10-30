@@ -61,4 +61,9 @@ function populateCustomersTable() {
     });
 }
 
-
+function editAndDelete() {
+    var tableContent = '';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
+    return tableContent;
+}

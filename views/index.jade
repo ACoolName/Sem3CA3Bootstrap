@@ -27,6 +27,7 @@ block content
                     tableContent += '<td>' + this.orderDate + '</td>';
                     tableContent += '<td>' + this.shipName + '</td>';
                     tableContent += '<td>' + this.shipAddress + '</td>';
+                    tableContent += editAndDelete();
                     tableContent += '</tr>';
                 });
                         // Inject the whole content string into our existing HTML table
@@ -56,5 +57,7 @@ block content
                     th Date
                     th Name
                     th Address
+                    th Edit
+                    th Delete
                 tbody
         // /USER LIST
