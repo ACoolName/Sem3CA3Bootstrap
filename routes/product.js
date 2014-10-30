@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/all', function (req, res) {
-    Product.getAllProducts(function (err, p) {
+    Product.all(function (err, p) {
         if (err) {
             res.status(500).send({status: 500, message: err.message, type: 'internal'});
             res.end();
