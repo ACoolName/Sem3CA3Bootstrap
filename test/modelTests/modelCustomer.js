@@ -1,30 +1,30 @@
 var should = require('should');
-var db = require('../models/db');
-var Customer = require('../models/customer');
+var beforeTest = require('./beforeTest');
+var Customer = require('../../models/customer');
 
 describe('Customer Model Helper Class', function () {
-    describe('getAllCustomers', function () {
+    describe('all', function () {
         it('Should return a list of all customers', function (done) {
-            Customer.getAllCustomers(function (err, o) {
-                o.length.should.equal(91);
+            Customer.getAllCustomers(function (err, c) {
+                c.length.should.equal(2);
                 done();
             });
         })
     });
 
-    describe('getCustomer', function () {
+    describe('get', function () {
         it('Should return one customer',
             function (done) {
-                Customer.getCustomer("ALFKI", function (err, o) {
-                    should.exist(o);
+                Customer.getCustomer("ALFKI", function (err, c) {
+                    should.exist(c);
                     done();
                 });
             }
         );
         it('Should return null',
             function (done) {
-                Customer.getCustomer(0, function (err, o) {
-                    should.not.exist(o);
+                Customer.getCustomer(0, function (err, c) {
+                    should.not.exist(c);
                     done();
                 });
             }
