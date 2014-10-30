@@ -10,12 +10,47 @@ block content
         .col-xs-12.col-sm-12.col-md-6.col-lg-6.col-xs-offset-0.col-sm-offset-0.col-md-offset-3.col-lg-offset-3.toppad
             .panel.panel-info
                 .panel-heading
-                    h3.panel-title Details about user
+                    h3.panel-title Details about customer
                 .panel-body
                     .row
                         .col-md-9.col-lg-9
                             #user
                                 table.table.table-user-information
                                     tbody
+    .row
+    .panel.panel-primary.filterable
+         .panel-heading
+            h3.panel-title Orders
+        #orderViewer
+          table.table
+            thead
+                tr.filters
+                    th
+                      |ID
+                    th
+                        |Employee ID
+                    th
+                        |Order date
+                    th
+                        |Required date
+                    th
+                        |Shipped date
+                    th
+                        |Shipped via
+                    th
+                        |Freight date
+                    th
+                        |Ship name
+                    th
+                        |Ship address
+                    th
+                        |Ship city
+                    th
+                        |Ship region
+                    th
+                        |Ship postal code
+                    th
+                        |Ship country
+            tbody
     div
         button(onclick='goBack()') Back

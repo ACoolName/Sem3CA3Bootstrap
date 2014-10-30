@@ -49,6 +49,16 @@ router.get('/:id', function (req, res) {
 });
 
 
+router.get('/customer/:id',function(req,res){
+   var customerId = req.params.id;
+    Order.getAllByCustomerId(customerId,function(err,orderDetails){
+        if (!errorHandler.errorHandle(err, res)) return;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(orderDetails));
+    });
+});
+
+
 
 
 module.exports = router;
