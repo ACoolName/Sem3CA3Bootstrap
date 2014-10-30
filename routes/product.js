@@ -15,6 +15,21 @@ router.get('/all', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(p));
     });
+})
+
+router.get('/:id', function (req, res) {
+    var catId = req.params.id;
+    Product.getAllByCategoryId(catId,function (err, p) {
+        if (!errorHandler.errorHandle(err, res)) return;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(p));
+    });
+});
+
+router.get('/category/:id', function (req, res) {
+    res.setHeader('Content-Type', 'text/html');
+    res.render("products");
+
 });
 
 module.exports = router;
