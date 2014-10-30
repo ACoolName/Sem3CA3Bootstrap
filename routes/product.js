@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Product = require('../models/product');
+var errorHandler = require('../helperClasses/errorHandler');
 
 /* GET users listing. */
 router.get('/', function (req, res) {
@@ -10,11 +11,7 @@ router.get('/', function (req, res) {
 
 router.get('/all', function (req, res) {
     Product.all(function (err, p) {
-        if (err) {
-            res.status(500).send({status: 500, message: err.message, type: 'internal'});
-            res.end();
-            return;
-        }
+        if (!errorHandler.errorHandle(err, res)) return;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(p));
     });
