@@ -30,12 +30,28 @@ describe('Abstract Search Class', function () {
     describe('createUpdateFunc', function () {
         it('Should update one object of the passed in class',
             function (done) {
-//                var orderUpdateFunc = abs.createUpdateFunc(Order);
-//                orderUpdateFunc(1, function (err, c) {
-//                    should.exist(c);
-//                    done();
-//                })
-                should.exist(null);
+                var orderUpdateFunc = abs.createUpdateFunc(Order);
+                orderUpdateFunc({_id: 10248, customerId: "PETER"}, function (err, o) {
+                    var orderFindFunc = abs.createFindOneFunc(Order);
+                    orderFindFunc(10248, function (err, order) {
+                        order.customerId.should.equal("PETER");
+                        done();
+                    });
+                })
+            }
+        )
+    });
+    describe('createDeleteFunc', function () {
+        it('Should delete one object of the passed in class',
+            function (done) {
+                var orderDeleteFunc = abs.createDeleteFunc(Order);
+                orderDeleteFunc(10248, function (err, o) {
+                    var orderFindFunc = abs.createFindOneFunc(Order);
+                    orderFindFunc(10248, function (err, order) {
+                        should.not.exist(order);
+                        done();
+                    });
+                })
             }
         )
     });
