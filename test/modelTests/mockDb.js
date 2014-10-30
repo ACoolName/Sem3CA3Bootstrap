@@ -92,7 +92,7 @@ function getProducts(products) {
 function getOrderDetails(order_details) {
     return order_details.map(function(e) {
         return {
-            order: e.orderID,
+            orderId: e.orderID,
             product: e.productID,
             unitPrice: e.unitPrice,
             quantity: e.quantity,

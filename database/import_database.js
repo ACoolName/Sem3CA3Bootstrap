@@ -18,7 +18,7 @@ function readData(path) {
                 res[headers[i]] = e[i];
         }
         return res;
-    })
+    });
     console.log(path + ": " + result.length);
     return result;
 }
