@@ -1,0 +1,26 @@
+extends layout
+block content
+    script.
+        $(document).ready(function() {
+            populateCustomersTable();
+        });
+    div.container
+        div
+            h1= title
+        div
+        #customerViewer
+            table(class="table table-striped table-hover")
+                thead
+                    th ID
+                    th Company Name
+                    th Contact Name
+                    th Contact Title
+                    th Address
+                    th City
+                    th Region
+                    th Post Code
+                    th Country
+                    th Phone
+                    th Fax
+                tbody
+        // /USER LIST

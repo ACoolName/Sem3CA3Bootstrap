@@ -1,0 +1,69 @@
+extends layout
+block content
+    script.
+        // DOM Ready =============================================================
+        $(document).ready(function() {
+            // Populate the user table on initial page load
+            populateTable();
+        });
+                // Functions =============================================================
+                // Fill table with data
+        function populateTable() {
+            // Empty content string
+            var tableContent = '';
+            // jQuery AJAX call for JSON
+            $.getJSON( '/employee/all', function( data ) {
+                function compare(a,b) {
+                if (a._id < b._id)
+                    return -1;
+                if (a._id > b._id)
+                    return 1;
+                return 0;
+                }
+                data.sort(compare);
+                $.each(data, function(){
+                    tableContent += '<tr>';
+                    tableContent += '<td>' + this._id + '</td>';
+                    tableContent += '<td>' + this.lastName + '</td>';
+                    tableContent += '<td>' + this.firstName + '</td>';
+                    tableContent += '<td>' + this.title + '</td>';
+                    tableContent += '<td>' + this.titleOfCourtesy + '</td>';
+                    tableContent += '<td>' + this.birthDate + '</td>';
+                    tableContent += '<td>' + this.hireDate + '</td>';
+                    tableContent += '<td>' + this.address + '</td>';
+                    tableContent += '<td>' + this.region + '</td>';
+                    tableContent += '<td>' + this.postalCode + '</td>';
+                    tableContent += '<td>' + this.country + '</td>';
+                    tableContent += '<td>' + this.homePhone + '</td>';
+                    tableContent += '<td>' + this.extension + '</td>';
+                    tableContent += '<td>' + this.notes + '</td>';
+                    tableContent += '</tr>';
+                });
+                        // Inject the whole content string into our existing HTML table
+                $('#employeesViewer table tbody').html(tableContent);
+            });
+        }
+    div.container
+        div
+            h1= title
+        div
+        #employeesViewer
+            table(class="table table-striped table-hover")
+                thead
+                    th ID
+                    th Last Name
+                    th First Name
+                    th Title
+                    th Title Of Courtesy
+                    th Birth Date
+                    th Hire Date
+                    th Adress
+                    th City
+                    th Region
+                    th Post Code
+                    th Country
+                    th Home Phone
+                    th Extension
+                    th Notes
+                tbody
+        // /USER LIST
