@@ -1,9 +1,9 @@
 var fs = require('fs');
-var async = require('async');
 var mongoose = require('mongoose');
 var model = require('./model');
+var async = require('async');
 
-var dbUrl = "mongodb://localhost/northwind";
+var dbUrl = "mongodb://test:test@ds063879.mongolab.com:63879/testraulstelescu";
 
 
 function readData(path) {
@@ -19,7 +19,6 @@ function readData(path) {
         }
         return res;
     });
-    console.log(path + ": " + result.length);
     return result;
 }
 
@@ -78,7 +77,7 @@ function getProducts() {
         return {
             _id: product.productID,
             name: product.productName,
-            category: product.categoryID,
+            categoryId: product.categoryID,
             quantityPerUnit: product.quantityPerUnit,
             unitPrice: product.unitPrice,
             unitsInStock: product.unitsInStock,
@@ -92,8 +91,8 @@ function getProducts() {
 function getOrderDetails() {
     return order_details.map(function(e) {
         return {
-            order: e.orderID,
-            product: e.productID,
+            orderId: e.orderID,
+            productId: e.productID,
             unitPrice: e.unitPrice,
             quantity: e.quantity,
             discount: e.discount
@@ -105,8 +104,8 @@ function getOrders() {
     return orders.map(function(e) {
         return {
             _id: e.orderID,
-            customer: e.customerID,
-            employee: e.employeeID,
+            customerId: e.customerID,
+            employeeId: e.employeeID,
             orderDate: e.orderDate.substring(0, 10),
             requiredDate: e.requiredDate.substring(0, 10),
             shippedDate: e.shippedDate.substring(0, 10),
@@ -182,7 +181,3 @@ addData(getOrderDetails(), model.DetailsModel);
 async.series(asyncTasks, function(){
     closeDatabase();
 });
-
-
-
-

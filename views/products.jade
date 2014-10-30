@@ -12,38 +12,30 @@ block content
             // Empty content string
             var tableContent = '';
             // jQuery AJAX call for JSON
-            $.getJSON( '/order', function( data ) {
+            $.getJSON( '/products/all', function( data ) {
                 function compare(a,b) {
-                if (a._id > b._id)
-                    return -1;
                 if (a._id < b._id)
+                    return -1;
+                if (a._id > b._id)
                     return 1;
                 return 0;
                 }
                 data.sort(compare);
                 $.each(data, function(){
                     tableContent += '<tr>';
-                    tableContent += '<td><a href="order/' + this._id + '">' + this._id + '</a></td>';
-                    tableContent += '<td>' + this.orderDate + '</td>';
-                    tableContent += '<td>' + this.shipName + '</td>';
-                    tableContent += '<td>' + this.shipAddress + '</td>';
+                    tableContent += '<td>' + this._id + '</td>';
+                    tableContent += '<td>' + this.name + '</td>';
+                    tableContent += '<td>' + this.categoryId + '</td>';
+                    tableContent += '<td>' + this.unitPrice + '</td>';
+                    tableContent += '<td>' + this.unitsInStock + '</td>';
+                    tableContent += '<td>' + this.quantityPerUnit + '</td>';
+                    tableContent += '<td>' + this.unitsOnOrder + '</td>';
+                    tableContent += '<td>' + this.reorderLevel + '</td>';
                     tableContent += '</tr>';
                 });
                         // Inject the whole content string into our existing HTML table
                 $('#orderViewer table tbody').html(tableContent);
             });
-        }
-        function mockPopulate() {
-            var tableContent = "";
-            for(var i = 0; i < 10; i++){
-                tableContent += '<tr>';
-                tableContent += '<td>' + "ID" + i + '</td>';
-                tableContent += '<td>' + "Date" + i + '</td>';
-                tableContent += '<td>' + "Name" + i + '</td>';
-                tableContent += '<td>' + "Address" + i + '</td>';
-                tableContent += '</tr>';
-            }
-            $('#orderViewer table tbody').html(tableContent);
         }
     div.container
         div
@@ -53,8 +45,12 @@ block content
             table(class="table table-striped table-hover")
                 thead
                     th ID
-                    th Date
                     th Name
-                    th Address
+                    th CategoryID
+                    th Unit Price
+                    th Units in stock
+                    th Quantity/unit
+                    th Units in order
+                    th Reorder Level
                 tbody
         // /USER LIST

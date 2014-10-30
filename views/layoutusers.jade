@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        title= title
+        //link(href="/images/favicon.ico", rel="shortcut icon", type="image/x-icon")
+        link(rel='stylesheet', href='/css/bootstrap.css')
+        link(rel='stylesheet', href='/css/user.css')
+        script(src='/javascripts/jquery.js')
+    body
+        block menu
+        block content
+        block footer
+        include scripts

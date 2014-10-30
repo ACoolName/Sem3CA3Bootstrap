@@ -12,6 +12,7 @@ router.get('/:id', function (req, res) {
     Order.getOrder(orderId, function (err, o) {
         if (!errorHandler.errorHandle(err, res)) return;
         if (!o) {
+        
             res.status(404).send({status: 404, message: "Object not found", type: 'Not Found'});
             res.end();
             return;
@@ -27,11 +28,15 @@ router.get('/:id', function (req, res) {
                 Product.getAllProducts(productIds, function (err, products) {
                     if (!errorHandler.errorHandle(err, res)) return;
                     Employee.getEmployee(o.employeeId, function (err, employee) {
+                        var hashMap = {};
+                        products.forEach(function(prod) {
+                            hashMap[prod._id] = prod;
+                        });
                         var fullOrder = {
                             customer: c,
                             order: o,
                             orderDetails: orderDetails,
-                            products: products,
+                            products: hashMap,
                             employee: employee
                         };
                         res.setHeader('Content-Type', 'application/json');
