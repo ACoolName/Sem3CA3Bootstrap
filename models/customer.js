@@ -1,5 +1,5 @@
 var abs = require('./abstractSearch');
-var model = require('../database/model');
-var Customer = model.CustomerModel;
+var mongoose = require('mongoose');
+var Customer = mongoose.model('customers');
 
 module.exports = abs.createExportObject(Customer);
