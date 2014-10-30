@@ -1,6 +1,6 @@
 var should = require('should');
-var db = require('../models/db');
-var orders = require('../models/orders');
+var beforeTest = require('./beforeTest');
+var orders = require('../../models/orders');
 var mongoose = require('mongoose');
 var Order = mongoose.model('orders');
 
@@ -8,8 +8,7 @@ describe('Order Model Helper Class', function () {
     describe('getAllOrders', function () {
         it('Should return a list of all orders', function (done) {
             orders.all(function (err, o) {
-                o.length.should.equal(830);
-                console.log(o[0]._id);
+                o.length.should.equal(13);
                 done();
             });
         })

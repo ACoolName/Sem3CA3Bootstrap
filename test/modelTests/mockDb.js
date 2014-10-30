@@ -1,10 +1,11 @@
+var mongoose = require( 'mongoose' );
+var mockgoose = require('mockgoose');
+mockgoose(mongoose);
+
+
+var model = require('../../database/model.js');
 var fs = require('fs');
-var mongoose = require('mongoose');
-var model = require('./model');
 var async = require('async');
-
-var dbUrl = "mongodb://test:test@ds063879.mongolab.com:63879/testraulstelescu";
-
 
 function readData(path) {
     var file = fs.readFileSync(path, 'utf8');
@@ -22,7 +23,7 @@ function readData(path) {
     return result;
 }
 
-function getCustomers() {
+function getCustomers(customers) {
     return customers.map(function(customer) {
         return {
             _id: customer.customerID,
@@ -38,9 +39,9 @@ function getCustomers() {
             fax: customer.fax
         };
     });
-};
+}
 
-function getEmployees() {
+function getEmployees(employees) {
     return employees.map(function(emp) {
         return {
             _id: emp.employeeID,
@@ -62,7 +63,7 @@ function getEmployees() {
     });
 }
 
-function getCategories() {
+function getCategories(categories) {
     return categories.map(function(category) {
         return {
             _id: category.categoryID,
@@ -72,12 +73,12 @@ function getCategories() {
     });
 }
 
-function getProducts() {
+function getProducts(products) {
     return products.map(function(product) {
         return {
             _id: product.productID,
             name: product.productName,
-            categoryId: product.categoryID,
+            category: product.categoryID,
             quantityPerUnit: product.quantityPerUnit,
             unitPrice: product.unitPrice,
             unitsInStock: product.unitsInStock,
@@ -88,11 +89,11 @@ function getProducts() {
     });
 }
 
-function getOrderDetails() {
+function getOrderDetails(order_details) {
     return order_details.map(function(e) {
         return {
             orderId: e.orderID,
-            productId: e.productID,
+            product: e.productID,
             unitPrice: e.unitPrice,
             quantity: e.quantity,
             discount: e.discount
@@ -100,12 +101,12 @@ function getOrderDetails() {
     })
 }
 
-function getOrders() {
+function getOrders(orders) {
     return orders.map(function(e) {
         return {
             _id: e.orderID,
-            customerId: e.customerID,
-            employeeId: e.employeeID,
+            customer: e.customerID,
+            employee: e.employeeID,
             orderDate: e.orderDate.substring(0, 10),
             requiredDate: e.requiredDate.substring(0, 10),
             shippedDate: e.shippedDate.substring(0, 10),
@@ -119,65 +120,52 @@ function getOrders() {
             shipCountry: e.shipCountry
         };
     });
-};
-
-var categories = readData('categories.json');
-var customers = readData('customers.json');
-var employees = readData('employees.json');
-var order_details = readData('order_details.json');
-var orders = readData('orders.json');
-var products = readData('products.json');
-
-var db = mongoose.connect(dbUrl);
-db.connection.once('open', function() {
-    console.log("Connected");
-});
-db.connection.on('error', function(err) {
-    console.log(err);
-    console.log('Did you remember to start MongodDb?');
-});
-
-model.CategoryModel.remove({}).exec();
-model.ProductModel.remove({}).exec();
-model.EmployeeModel.remove({}).exec();
-model.CustomerModel.remove({}).exec();
-model.DetailsModel.remove({}).exec();
-model.OrderModel.remove({}).exec();
-
-var done = [0,0,0,0,0,0];
-
-
-function closeDatabase() {
-    //for(var i = 0; i < done.length; i++) {
-    //    if(done[i] == 0) {
-    //        return;
-    //    }
-    //}
-    db.connection.close();
 }
 
-var asyncTasks = [];
+function initializeDB() {
+    var dbUrl = "NOTAURL";
+    var db = mongoose.connect(dbUrl);
 
-function addData(data, dataModel) {
-    data.forEach(function(item){
-        asyncTasks.push(function(callback){
-            var element = new dataModel(item);
-            element.save(function(err, order) {
-                if(err) console.log(err);
-                callback();
+    var categories = readData('test/data/categories.json');
+    var customers = readData('test/data/customers.json');
+    var employees = readData('test/data/employees.json');
+    var order_details = readData('test/data/order_details.json');
+    var orders = readData('test/data/orders.json');
+    var products = readData('test/data/products.json');
+
+    model.CategoryModel.remove({}).exec();
+    model.ProductModel.remove({}).exec();
+    model.EmployeeModel.remove({}).exec();
+    model.CustomerModel.remove({}).exec();
+    model.DetailsModel.remove({}).exec();
+    model.OrderModel.remove({}).exec();
+
+    var asyncTasks = [];
+
+    function addData(data, dataModel) {
+        data.forEach(function(item){
+            asyncTasks.push(function(callback){
+                var element = new dataModel(item);
+                element.save(function(err, order) {
+                    if(err) console.log(err);
+                    callback();
+                });
             });
         });
+    }
+
+
+    addData(getCategories(categories), model.CategoryModel);
+    addData(getProducts(products), model.ProductModel);
+    addData(getEmployees(employees), model.EmployeeModel);
+    addData(getCustomers(customers), model.CustomerModel);
+    addData(getOrders(orders), model.OrderModel);
+    addData(getOrderDetails(order_details), model.DetailsModel);
+    async.series(asyncTasks, function(){
     });
 }
 
 
-addData(getCategories(), model.CategoryModel);
-addData(getProducts(), model.ProductModel);
-addData(getEmployees(), model.EmployeeModel);
-addData(getCustomers(), model.CustomerModel);
-addData(getOrders(), model.OrderModel);
-addData(getOrderDetails(), model.DetailsModel);
-
-async.series(asyncTasks, function(){
-    closeDatabase();
-});
+module.exports = {
+    initializeDB: initializeDB
+};

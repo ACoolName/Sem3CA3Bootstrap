@@ -14,13 +14,11 @@ function createFindOneFunc(object, searchByName) {
 function createFindFunc(object, searchByName) {
     return function (callbackOrId, callback) {
         var condition = {};
-        console.log(callbackOrId);
         if (callback) {
             condition[searchByName || "_id"] = callbackOrId;
         } else {
             callback = callbackOrId;
         }
-        console.log(condition);
         object.find(condition, function (err, entities) {
             if (err) {
                 return callback(err);
