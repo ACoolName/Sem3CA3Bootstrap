@@ -28,7 +28,28 @@ function createFindFunc(object, searchByName) {
     };
 }
 
+function createUpdateFunc(object){
+    return function (obj, callback) {
+        object.update({_id: obj._id},
+		      {$set: obj},
+		      function (err, entities) {
+			  if (err) {
+			      return callback(err);
+			  }
+			  callback(null, entities);
+		      });
+    };
+}
+
+function createExportObject(object){
+    return {all: createFindFunc(object),
+	    get: createFindOneFunc(object),
+	    update: createUpdateFunc(object)}
+}
+
 module.exports = {
     createFindOneFunc: createFindOneFunc,
-    createFindFunc: createFindFunc
+    createFindFunc: createFindFunc,
+    createUpdateFunc: createUpdateFunc,
+    createExportObject: createExportObject
 };

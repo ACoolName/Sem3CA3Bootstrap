@@ -5,7 +5,7 @@ var Customer = require('../../models/customer');
 describe('Customer Model Helper Class', function () {
     describe('all', function () {
         it('Should return a list of all customers', function (done) {
-            Customer.getAllCustomers(function (err, c) {
+            Customer.all(function (err, o) {
                 c.length.should.equal(2);
                 done();
             });
@@ -15,7 +15,7 @@ describe('Customer Model Helper Class', function () {
     describe('get', function () {
         it('Should return one customer',
             function (done) {
-                Customer.getCustomer("ALFKI", function (err, c) {
+                Customer.get("ALFKI", function (err, o) {
                     should.exist(c);
                     done();
                 });
@@ -23,7 +23,7 @@ describe('Customer Model Helper Class', function () {
         );
         it('Should return null',
             function (done) {
-                Customer.getCustomer(0, function (err, c) {
+                Customer.get(0, function (err, o) {
                     should.not.exist(c);
                     done();
                 });

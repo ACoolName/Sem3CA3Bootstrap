@@ -9,7 +9,7 @@ var errorHandler = require('../helperClasses/errorHandler');
 
 router.get('/:id', function (req, res) {
     var orderId = req.params.id;
-    Order.getOrder(orderId, function (err, o) {
+    Order.get(orderId, function (err, o) {
         if (!errorHandler.errorHandle(err, res)) return;
         if (!o) {
         
@@ -19,15 +19,15 @@ router.get('/:id', function (req, res) {
         }
         OrderDetails.getOrderDetailsByOrderId(orderId, function (err, orderDetails) {
             if (!errorHandler.errorHandle(err, res)) return;
-            Customer.getCustomer(o.customerId, function (err, c) {
+            Customer.get(o.customerId, function (err, c) {
                 if (!errorHandler.errorHandle(err, res)) return;
                 var productIds = orderDetails.map(function (element) {
                     return element.productId;
                 });
                 productIds = { "$in": productIds};
-                Product.getAllProducts(productIds, function (err, products) {
+                Product.all(productIds, function (err, products) {
                     if (!errorHandler.errorHandle(err, res)) return;
-                    Employee.getEmployee(o.employeeId, function (err, employee) {
+                    Employee.get(o.employeeId, function (err, employee) {
                         var hashMap = {};
                         products.forEach(function(prod) {
                             hashMap[prod._id] = prod;

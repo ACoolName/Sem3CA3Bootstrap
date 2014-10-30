@@ -5,7 +5,7 @@ var Customer = require('../models/customer');
 /* GET users listing. */
 router.get('/:id', function (req, res) {
     var customerId = req.params.id;
-    Customer.getCustomer(customerId, function (err, c) {
+    Customer.get(customerId, function (err, c) {
         if (err) {
             res.status(500).send({status: 500, message: err.message, type: 'internal'});
             res.end();
@@ -20,7 +20,7 @@ router.get('/:id', function (req, res) {
 
 router.get('/getcustomer/:id', function (req, res) {
     var customerId = req.params.id;
-    Customer.getCustomer(customerId, function (err, c) {
+    Customer.get(customerId, function (err, c) {
         if (err) {
             res.status(500).send({status: 500, message: err.message, type: 'internal'});
             res.end();
