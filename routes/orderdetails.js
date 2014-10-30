@@ -9,46 +9,66 @@ var errorHandler = require('../helperClasses/errorHandler');
 
 router.get('/:id', function (req, res) {
     var orderId = req.params.id;
+    var done = 0;
+    var customer;
+    var order;
+    var orderDetails;
+    var employee;
+    var products;
+
+    function finished() {
+        done++;
+        if (done != 3) return;
+
+        var hashMap = {};
+        products.forEach(function (prod) {
+            hashMap[prod._id] = prod;
+        });
+        var fullOrder = {
+            customer: customer,
+            order: order,
+            orderDetails: orderDetails,
+            products: hashMap,
+            employee: employee
+        };
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(fullOrder));
+    }
+
     Order.get(orderId, function (err, o) {
         if (!errorHandler.errorHandle(err, res)) return;
         if (!o) {
-        
             res.status(404).send({status: 404, message: "Object not found", type: 'Not Found'});
             res.end();
             return;
         }
-        OrderDetails.getAllByOrderId(orderId, function (err, orderDetails) {
+        order = o;
+        Customer.get(o.customerId, function (err, c) {
             if (!errorHandler.errorHandle(err, res)) return;
-            Customer.get(o.customerId, function (err, c) {
-                if (!errorHandler.errorHandle(err, res)) return;
-                var productIds = orderDetails.map(function (element) {
-                    return element.productId;
-                });
-                productIds = { "$in": productIds};
-                Product.all(productIds, function (err, products) {
-                    if (!errorHandler.errorHandle(err, res)) return;
-                    Employee.get(o.employeeId, function (err, employee) {
-                        var hashMap = {};
-                        products.forEach(function(prod) {
-                            hashMap[prod._id] = prod;
-                        });
-                        var fullOrder = {
-                            customer: c,
-                            order: o,
-                            orderDetails: orderDetails,
-                            products: hashMap,
-                            employee: employee
-                        };
-                        res.setHeader('Content-Type', 'application/json');
-                        res.end(JSON.stringify(fullOrder));
-                    });
-                });
-            });
+            customer = c;
+            finished();
+        });
+        Employee.get(o.employeeId, function (err, e) {
+            if (!errorHandler.errorHandle(err, res)) return;
+            employee = e;
+            finished();
         });
     });
+
+    OrderDetails.getAllByOrderId(orderId, function (err, od) {
+        if (!errorHandler.errorHandle(err, res)) return;
+        orderDetails = od;
+        var productIds = orderDetails.map(function (element) {
+            return element.productId;
+        });
+        productIds = { "$in": productIds};
+        Product.all(productIds, function (err, p) {
+            if (!errorHandler.errorHandle(err, res)) return;
+            products = p;
+            finished();
+        });
+    });
+
 });
-
-
-
 
 module.exports = router;
