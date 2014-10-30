@@ -1,51 +1,9 @@
 extends layout
 block content
     script.
-        // DOM Ready =============================================================
         $(document).ready(function() {
-            // Populate the user table on initial page load
-            populateTable();
+            populateOrderTable();
         });
-                // Functions =============================================================
-                // Fill table with data
-        function populateTable() {
-            // Empty content string
-            var tableContent = '';
-            // jQuery AJAX call for JSON
-            $.getJSON( '/order', function( data ) {
-                function compare(a,b) {
-                if (a._id > b._id)
-                    return -1;
-                if (a._id < b._id)
-                    return 1;
-                return 0;
-                }
-                data.sort(compare);
-                $.each(data, function(){
-                    tableContent += '<tr>';
-                    tableContent += '<td><a href="order/' + this._id + '">' + this._id + '</a></td>';
-                    tableContent += '<td>' + this.orderDate + '</td>';
-                    tableContent += '<td>' + this.shipName + '</td>';
-                    tableContent += '<td>' + this.shipAddress + '</td>';
-                    tableContent += editAndDelete();
-                    tableContent += '</tr>';
-                });
-                        // Inject the whole content string into our existing HTML table
-                $('#orderViewer table tbody').html(tableContent);
-            });
-        }
-        function mockPopulate() {
-            var tableContent = "";
-            for(var i = 0; i < 10; i++){
-                tableContent += '<tr>';
-                tableContent += '<td>' + "ID" + i + '</td>';
-                tableContent += '<td>' + "Date" + i + '</td>';
-                tableContent += '<td>' + "Name" + i + '</td>';
-                tableContent += '<td>' + "Address" + i + '</td>';
-                tableContent += '</tr>';
-            }
-            $('#orderViewer table tbody').html(tableContent);
-        }
     div.container
         div
             h1= title

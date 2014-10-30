@@ -2,76 +2,9 @@ extends layoutusers
 block content
     script.
         $(document).ready(function() {
-                                    getDetailsAboutUser();
-                                });
-        function getDetailsAboutUser(){
-        var ar = document.URL.split('/');
-        var id = ar[ar.length-1];
-        $.getJSON('getemployee/'+id,function (data){
-            var add="";
-            add+="<tr>";
-            add+="<td>First Name: </td>";
-            add+="<td>"+data.firstName+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Last Name: </td>";
-            add+="<td>"+data.lastName+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>City: </td>";
-            add+="<td>"+data.city+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Address: </td>";
-            add+="<td>"+data.address+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Region: </td>";
-            add+="<td>"+data.region+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Postal Code: </td>";
-            add+="<td>"+data.postalCode+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Country: </td>";
-            add+="<td>"+data.country+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Phone: </td>";
-            add+="<td>"+data.homePhone+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Title: </td>";
-            add+="<td>"+data.title+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Title of Courtesy: </td>";
-            add+="<td>"+data.titleOfCourtesy+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Birth Date: </td>";
-            add+="<td>"+data.birthDate+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Hire Date: </td>";
-            add+="<td>"+data.hireDate+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Extension: </td>";
-            add+="<td>"+data.extension+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Notes: </td>";
-            add+="<td>"+data.notes+"</td>";
-            add+="</tr>";
+            getDetailsAboutEmployee();
+        });
 
-            $('#user table tbody').html(add);
-        })
-        }
-        function goBack() {
-            window.history.back();
-        }
     .container
     .row
         .col-xs-12.col-sm-12.col-md-6.col-lg-6.col-xs-offset-0.col-sm-offset-0.col-md-offset-3.col-lg-offset-3.toppad
@@ -81,7 +14,7 @@ block content
                 .panel-body
                     .row
                         .col-md-9.col-lg-9
-                            #user
+                            #userTable
                                 table.table.table-user-information
                                     tbody
     div

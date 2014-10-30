@@ -1,57 +1,9 @@
 extends layout
 block content
     script.
-        // DOM Ready =============================================================
         $(document).ready(function() {
-            // Populate the user table on initial page load
-            fillDetails();
+            fillOrderDetails();
         });
-                // Functions =============================================================
-                // Fill table with data
-        function fillDetails() {
-            // Empty content string
-            var tableContent = '';
-            // jQuery AJAX call for JSON
-            var path = window.location.pathname.split('/');
-            $.getJSON( '/orderdetails/' + path[2], function( data ) {
-                $("#ID").text("ID: " + data.order._id);
-                $("#date").text("Date: " + data.order.orderDate);
-                $("#requ").text("Required: " + data.order.requiredDate);
-                $("#ship").text("Shipped: " + data.order.shippedDate);
-                $("#employee").text(data.employee.firstName + ' ' + data.employee.lastName).prop('href','/employee/' + data.employee._id);
-                $("#name").text(data.customer.companyName).prop('href','/customer/' + data.customer._id);
-                $("#addr").text("Address: " + data.customer.address)
-                $("#zip").text("Post Code: " + data.customer.postalCode);
-                $("#country").text("Country: " + data.customer.country);
-
-            //solution: get all the info from the data
-            //each piece of info will be a paragraph handled in the javascript
-            //the paragraphs will be "hard coded" p1 = "ID: " + data.id;
-            //gl hf
-            var total =0;
-                $.each(data.orderDetails, function(index, value){
-                total += (value.unitPrice - value.unitPrice * value.discount) * value.quantity;
-                    tableContent += '<tr>';
-                    tableContent += '<td>' + data.products[value.productId].name + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
-                    tableContent += '<td>' + value.unitPrice.toFixed(2) + '</td>';
-                    tableContent += '<td>' + value.quantity + '</td>';
-                    tableContent += '<td>' + value.discount.toFixed(2) + '</td>';
-                    tableContent += '<td>' + ((value.unitPrice - value.unitPrice * value.discount) * value.quantity).toFixed(2) + '</td>';
-                    tableContent += '</tr>';
-                });
-                tableContent+='<tr>';
-                tableContent+='<td>'+ 'Total:'+'</td>';
-                tableContent+='<td> </td>';
-                tableContent+='<td> </td>';
-                tableContent+='<td> </td>';
-                tableContent+='<td>'+ total.toFixed(2)+' </td>';
-                tableContent+='</tr>';
-                $('#products table tbody').html(tableContent);
-            });
-        }
-        function goBack() {
-            window.history.back();
-        }
     div.container
         h1= title
     div
@@ -73,7 +25,7 @@ block content
     div
         button(onclick='goBack()') Back
     div
-        #products
+        #productsViewer
             table(class="table table-striped table-hover")
                 thead
                     th Product

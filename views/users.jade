@@ -2,66 +2,8 @@ extends layoutusers
 block content
     script.
         $(document).ready(function() {
-                                    getDetailsAboutUser();
-                                });
-        function getDetailsAboutUser(){
-
-        var ar = document.URL.split('/');
-        var id = ar[ar.length-1];
-
-        $.getJSON('getcustomer/'+id,function (data){
-            var add="";
-            add+="<tr>";
-            add+="<td>Name: </td>";
-            add+="<td>"+data._id+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>City: </td>";
-            add+="<td>"+data.city+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Address: </td>";
-            add+="<td>"+data.address+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Region: </td>";
-            add+="<td>"+data.region+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Postal Code: </td>";
-            add+="<td>"+data.postalCode+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Country: </td>";
-            add+="<td>"+data.country+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Phone: </td>";
-            add+="<td>"+data.phone+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Fax: </td>";
-            add+="<td>"+data.fax+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Company name: </td>";
-            add+="<td>"+data.companyName+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Contact name: </td>";
-            add+="<td>"+data.contactName+"</td>";
-            add+="</tr>";
-            add+="<tr>";
-            add+="<td>Contact title: </td>";
-            add+="<td>"+data.contactTitle+"</td>";
-            add+="</tr>";
-
-            $('#user table tbody').html(add);
-        })
-        }
-        function goBack() {
-            window.history.back();
-        }
+            getDetailsAboutUser();
+        });
 
     .container
     .row
