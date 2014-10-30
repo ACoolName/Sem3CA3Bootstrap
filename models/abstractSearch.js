@@ -3,10 +3,7 @@ function createFindOneFunc(object, searchByName) {
         var condition = {};
         condition[searchByName || "_id"] = id;
         object.findOne(condition, function (err, entity) {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, entity);
+            err ? callback(err) : callback(null, entity);
         });
     };
 }
@@ -20,46 +17,45 @@ function createFindFunc(object, searchByName) {
             callback = callbackOrId;
         }
         object.find(condition, function (err, entities) {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, entities);
+            err ? callback(err) : callback(null, entities);
         });
     };
 }
 
-function createUpdateFunc(object){
+function createUpdateFunc(object) {
     return function (obj, callback) {
-	var id = obj._id;
-	delete obj._id;
+        var id = obj._id;
+        delete obj._id;
         object.update({_id: id},
-		      {$set: obj},
-		      function (err, numAffected) {
-			  if (err) {
-			      return callback(err);
-			  }
-			  callback(null, numAffected);
-		      });
+            {$set: obj},
+            function (err, numAffected) {
+                err ? callback(err) : callback(null, numAffected);
+            });
     };
 }
 
-function createDeleteFunc(object){
+function createDeleteFunc(object) {
     return function (id, callback) {
         object.findOneAndRemove({_id: id},
-		      function (err, doc) {
-			  if (err) {
-			      return callback(err);
-			  }
-			  callback(null, doc);
-		      });
+            function (err, doc) {
+                err ? callback(err) : callback(null, doc);
+            });
     };
 }
 
-function createExportObject(object){
-    return {all: createFindFunc(object),
-	    get: createFindOneFunc(object),
-	    update: createUpdateFunc(object),
-	    del: createDeleteFunc(object)}
+function createExportObject(object, extraList) {
+    var functions = {all: createFindFunc(object),
+        get: createFindOneFunc(object),
+        update: createUpdateFunc(object),
+        del: createDeleteFunc(object)};
+    if(!extraList) return functions;
+
+    extraList.forEach(function (e) {
+        var func = e.singleSearch ?
+            createFindOneFunc(object, e.idType) : createFindFunc(object, e.idType);
+        functions[e.functionName] = func;
+    });
+    return functions;
 }
 
 module.exports = {
