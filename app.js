@@ -10,8 +10,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var order = require('./routes/order');
 var orderdetails = require('./routes/orderdetails');
-var employee = require('./routes/employee');
+var employee = require('./routes/employees');
 var product = require('./routes/product');
+var customerRest = require('./routes/customerRest');
+var customer = require('./routes/customer');
 
 var app = express();
 
@@ -22,13 +24,26 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  req.rawBody = '';
+  req.setEncoding('utf8');
+
+  req.on('data', function(chunk) { 
+    req.rawBody += chunk;
+  });
+
+  req.on('end', function() {
+    next();
+  });
+});
+//app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/customers', users);
+app.use('/customer', customerRest);
+app.use('/customers', customer);
 app.use('/order', order);
 app.use('/orderdetails', orderdetails);
 app.use('/employee',employee);

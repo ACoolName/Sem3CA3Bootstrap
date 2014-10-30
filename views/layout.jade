@@ -10,7 +10,20 @@ html
     script(src='/javascripts/jquery.js')
 
   body
-    block menu
+    nav.navbar.navbar-default(role="navigation")
+      .container-fluid
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav
+                li
+                    a(id="menuHome" href="/") Home
+                li
+                    a(id="menuCategories" href="/categories") Categories
+                li
+                    a(id="menuProducts" href="/products") Products
+                li
+                    a(id="menuEmployees" href="/employee") Employees
+                li
+                    a(id="menuCustomers" href="/Customers") Customers
     block content
     block footer
     include scripts
