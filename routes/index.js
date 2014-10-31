@@ -6,4 +6,8 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Order Viewer' });
 });
 
+router.get('/documentation', function(req, res) {
+   res.render('documentation');
+});
+
 module.exports = router;

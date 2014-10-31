@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    head
+        title= pageTitle
+    body
+        h1 Who did what?
+        p.
+            As with the other projects we split our work into 2 groups of 2.
+            Martin and Tobias worked mostly on the back-end in the start and Teodor and Raul
+            worked on the front-end. Half way into the project we had enough things to do
+            that every started working on the own parts of the project and did a little here
+            and a little there which should be clear in the Github commit log.
+        h1  Design back-end:
+        p.
+            One of the most important principles in programming is DRY and during all of our
+            projects we try and design the structure and code in a way that we can abide to
+            this principle. The biggest examples of this is our abstract classes for our model
+            helper classes and the most common REST routes.
+        h1 Testing
+        p.
+            We decided to focus our testing on the different model helper classes
+            as most of the other code uses either code written for express or front end code which
+            we'll learn how to test next period.
+            We used Mocka together with Should and to make sure we had a consistent and quick tests
+            that also didn't interfere with any database we used <a href="https://www.npmjs.org/package/mockgoose">mockgoose</a>.
+            Mockgoose intercepts connection calls made by mongoose and redirect them to a
+            in memory "database" instead of relying on a mongodb database.
+            It handles most functionality that mongoose has, at least enough for this project.
+            To make sure of consistency we made a modified version of the import_database script that
+            we run before each test which allows us to reset the "database". We also used a smaller
+            dataset to ensure quick speed and a controlled test environment."
+        h3 Test results
+        img(src= "/images/testCA3results.png")
