@@ -1,5 +1,5 @@
 var rest = require("./abstractREST");
 products = new rest.ExpressREST('../models/product',
-    '../helperClasses/errorHandler');
+				'../helperClasses/errorHandler');
 products.produce();
 module.exports = products.router;
