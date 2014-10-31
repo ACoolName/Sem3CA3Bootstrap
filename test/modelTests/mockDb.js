@@ -1,7 +1,8 @@
 var mongoose = require( 'mongoose' );
 var mockgoose = require('mockgoose');
 mockgoose(mongoose);
-
+var dbUrl = "NOTAURL";
+var db = mongoose.connect(dbUrl);
 
 var model = require('../../database/model.js');
 var fs = require('fs');
@@ -123,9 +124,6 @@ function getOrders(orders) {
 }
 
 function initializeDB() {
-    var dbUrl = "NOTAURL";
-    var db = mongoose.connect(dbUrl);
-
     var categories = readData('test/data/categories.json');
     var customers = readData('test/data/customers.json');
     var employees = readData('test/data/employees.json');

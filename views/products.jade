@@ -2,7 +2,18 @@ extends layout
 block content
     script.
         $(document).ready(function() {
+            var ar = document.URL.split('/');
+            if(ar[ar.length-1]==""){
+            ar.splice(ar.length-1,1);
+            }
+            if(ar[ar.length-1]=='products'){
             populateProductsTable();
+            }
+            else if(isNaN(ar[ar.length-1])==false)
+                    {
+                        populateProductsTable(ar[ar.length-1]);
+                    }
+
         });
     div.container
         div

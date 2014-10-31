@@ -1,8 +1,72 @@
-function populateProductsTable() {
+function populateProductsTable(catId) {
+
+    if (catId == null) {
+        // Empty content string
+        var tableContent = '';
+        // jQuery AJAX call for JSON
+        $.getJSON('/products/all', function (data) {
+            function compare(a, b) {
+                if (a._id < b._id)
+                    return -1;
+                if (a._id > b._id)
+                    return 1;
+                return 0;
+            }
+
+            data.sort(compare);
+            $.each(data, function () {
+                tableContent += '<tr>';
+                tableContent += '<td>' + this._id + '</td>';
+                tableContent += '<td>' + this.name + '</td>';
+                tableContent += '<td>' + this.categoryId + '</td>';
+                tableContent += '<td>' + this.unitPrice + '</td>';
+                tableContent += '<td>' + this.unitsInStock + '</td>';
+                tableContent += '<td>' + this.quantityPerUnit + '</td>';
+                tableContent += '<td>' + this.unitsOnOrder + '</td>';
+                tableContent += '<td>' + this.reorderLevel + '</td>';
+                tableContent += '</tr>';
+            });
+            // Inject the whole content string into our existing HTML table
+            $('#productsViewer table tbody').html(tableContent);
+        });
+    }
+    else{
+        // Empty content string
+        var tableContent = '';
+        // jQuery AJAX call for JSON
+        $.getJSON('/products/'+catId, function (data) {
+            function compare(a, b) {
+                if (a._id < b._id)
+                    return -1;
+                if (a._id > b._id)
+                    return 1;
+                return 0;
+            }
+
+            data.sort(compare);
+            $.each(data, function () {
+                tableContent += '<tr>';
+                tableContent += '<td>' + this._id + '</td>';
+                tableContent += '<td>' + this.name + '</td>';
+                tableContent += '<td>' + this.categoryId + '</td>';
+                tableContent += '<td>' + this.unitPrice + '</td>';
+                tableContent += '<td>' + this.unitsInStock + '</td>';
+                tableContent += '<td>' + this.quantityPerUnit + '</td>';
+                tableContent += '<td>' + this.unitsOnOrder + '</td>';
+                tableContent += '<td>' + this.reorderLevel + '</td>';
+                tableContent += '</tr>';
+            });
+            // Inject the whole content string into our existing HTML table
+            $('#productsViewer table tbody').html(tableContent);
+        });
+    }
+}
+
+function populateCategoryTable() {
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/products/all', function (data) {
+    $.getJSON('/categories/all', function (data) {
         function compare(a, b) {
             if (a._id < b._id)
                 return -1;
@@ -13,15 +77,10 @@ function populateProductsTable() {
 
         data.sort(compare);
         $.each(data, function () {
-            tableContent += '<tr>';
+            tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/products/category/" + this._id + "'" + '"' + '>';
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.name + '</td>';
-            tableContent += '<td>' + this.categoryId + '</td>';
-            tableContent += '<td>' + this.unitPrice + '</td>';
-            tableContent += '<td>' + this.unitsInStock + '</td>';
-            tableContent += '<td>' + this.quantityPerUnit + '</td>';
-            tableContent += '<td>' + this.unitsOnOrder + '</td>';
-            tableContent += '<td>' + this.reorderLevel + '</td>';
+            tableContent += '<td>' + this.description + '</td>';
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -44,18 +103,10 @@ function populateCustomersTable() {
 
         data.sort(compare);
         $.each(data, function () {
-            tableContent += '<tr>';
+            tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/customer/" + this._id + "'" + '"' + '>';
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.companyName + '</td>';
             tableContent += '<td>' + this.contactName + '</td>';
-            tableContent += '<td>' + this.contactTitle + '</td>';
-            tableContent += '<td>' + this.address + '</td>';
-            tableContent += '<td>' + this.city + '</td>';
-            tableContent += '<td>' + this.region + '</td>';
-            tableContent += '<td>' + this.postalCode + '</td>';
-            tableContent += '<td>' + this.country + '</td>';
-            tableContent += '<td>' + this.phone + '</td>';
-            tableContent += '<td>' + this.fax + '</td>';
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -89,22 +140,11 @@ function populateEmployeesTable() {
 
         data.sort(compare);
         $.each(data, function () {
-            tableContent += '<tr>';
+            tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/employee/" + this._id + "'" + '"' + '>';
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.lastName + '</td>';
             tableContent += '<td>' + this.firstName + '</td>';
             tableContent += '<td>' + this.title + '</td>';
-            tableContent += '<td>' + this.titleOfCourtesy + '</td>';
-            tableContent += '<td>' + this.birthDate + '</td>';
-            tableContent += '<td>' + this.hireDate + '</td>';
-            tableContent += '<td>' + this.address + '</td>';
-            tableContent += '<td>' + this.region + '</td>';
-            tableContent += '<td>' + this.postalCode + '</td>';
-            tableContent += '<td>' + this.country + '</td>';
-            tableContent += '<td>' + this.homePhone + '</td>';
-            tableContent += '<td>' + this.extension + '</td>';
-            tableContent += '<td>' + this.notes + '</td>';
-            tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
         $('#employeesViewer table tbody').html(tableContent);
@@ -250,12 +290,14 @@ function getDetailsAboutUser() {
 
     var ar = document.URL.split('/');
     var id = ar[ar.length - 1];
+    var idOfCust;
 
     $.getJSON('getcustomer/' + id, function (data) {
         var add = "";
         add += "<tr>";
         add += "<td>Name: </td>";
         add += "<td>" + data._id + "</td>";
+        idOfCust=data._id;
         add += "</tr>";
         add += "<tr>";
         add += "<td>City: </td>";
@@ -299,5 +341,32 @@ function getDetailsAboutUser() {
         add += "</tr>";
 
         $('#user table tbody').html(add);
-    })
+        $.getJSON('/orderdetails/customer/' + idOfCust, function (data) {
+            console.log(idOfCust)
+            console.log(data);
+            var tableContent="";
+            $.each(data, function (index, value) {
+                tableContent += '<tr>';
+                tableContent += '<td>' + value._id + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
+                tableContent += '<td>' + value.employeeId + '</td>';
+                tableContent += '<td>' + value.orderDate + '</td>';
+                tableContent += '<td>' + value.requiredDate + '</td>';
+                tableContent += '<td>' + value.shippedDate + '</td>';
+                tableContent += '<td>' + value.shipVia + '</td>';
+                tableContent += '<td>' + value.freight + '</td>';
+                tableContent += '<td>' + value.shipName + '</td>';
+                tableContent += '<td>' + value.shipAddress + '</td>';
+                tableContent += '<td>' + value.shipCity + '</td>';
+                tableContent += '<td>' + value.shipRegion + '</td>';
+                tableContent += '<td>' + value.shipPostalCode + '</td>';
+                tableContent += '<td>' + value.shipCountry + '</td>';
+                tableContent += '</tr>';
+            });
+            console.log(tableContent);
+            $('#orderViewer table tbody').html(tableContent);
+        });
+    });
+    console.log(idOfCust);
+
+
 }
