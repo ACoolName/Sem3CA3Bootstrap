@@ -19,6 +19,7 @@ var customerRest = require('./routes/customerRest');
 var customerUI = require('./routes/customerUI');
 var category = require('./routes/categoryUI');
 var categoryREST = require('./routes/categoryREST');
+var start = require('./routes/start');
 
 var app = express();
 
@@ -59,6 +60,7 @@ app.use('/orderdetails', orderdetails);
 app.use('/employee',employeeUI);
 app.use('/products',productUI);
 app.use('/categories',category);
+app.use('/start', start);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
