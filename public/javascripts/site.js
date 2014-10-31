@@ -30,7 +30,7 @@ function populateProductsTable(catId) {
             $('#productsViewer table tbody').html(tableContent);
         });
     }
-    catId ? getJson('/json/products/' + catId) : getJson('/json/products', sort);
+    catId ? getJson('/json/products/' + catId) : getJson('/json/products', true);
 }
 
 function populateCategoryTable() {
