@@ -116,10 +116,20 @@ function populateCustomersTable() {
     });
 }
 
-function editAndDelete() {
+function deleteObject(path, func) {
+    $.ajax({
+        url: path,
+        type: 'DELETE',
+        success: function(result) {
+            window[func]();
+        }
+    });
+}
+
+function editAndDelete(path, func) {
     var tableContent = '';
-    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
-    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" ><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" onclick="deleteObject(\'' + path + '\' ,\'' + func + '\')"><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
     return tableContent;
 }
 
@@ -170,7 +180,7 @@ function populateOrderTable() {
             tableContent += '<td>' + this.orderDate + '</td>';
             tableContent += '<td>' + this.shipName + '</td>';
             tableContent += '<td>' + this.shipAddress + '</td>';
-            tableContent += editAndDelete();
+            tableContent += editAndDelete("/order/" + this._id, "populateOrderTable");
             tableContent += '</tr>';
         });
         $('#orderViewer table tbody').html(tableContent);

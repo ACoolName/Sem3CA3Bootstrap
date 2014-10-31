@@ -84,7 +84,7 @@ function ExpressREST(facadePath, errorHandlePath) {
 	    facade.del(id, function(err, el) {
 		if (!errorHandler.errorHandle(err, res))
 		    return;
-		if (!doc) {
+		if (!el) {
 		    res.status(404).send({status: 404,
 					  message: "Object not found",
 					  type: 'Not Found'});
