@@ -4,4 +4,4 @@ var mongoose = require('mongoose');
 var Product = mongoose.model('products');
 
 module.exports = abs.createExportObject(Product,
-    [new CustomFunction(false, "categoryId", "getAllByCategoryId")]);
+    [new CustomFunction(false, "categoryId", "get")]);

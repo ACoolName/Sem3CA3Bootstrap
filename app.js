@@ -8,13 +8,17 @@ var bodyParser = require('body-parser');
 var db = require('./models/db');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var order = require('./routes/order');
+var orderREST = require('./routes/orderREST');
+var orderUI = require('./routes/orderUI');
 var orderdetails = require('./routes/orderdetails');
-var employee = require('./routes/employees');
-var product = require('./routes/product');
+var employeeUI = require('./routes/employeeUI');
+var employeeREST = require('./routes/employeeREST');
+var productUI = require('./routes/productUI');
+var productREST = require('./routes/productREST');
 var customerRest = require('./routes/customerRest');
-var customer = require('./routes/customer');
-var category = require('./routes/category');
+var customerUI = require('./routes/customerUI');
+var category = require('./routes/categoryUI');
+var categoryREST = require('./routes/categoryREST');
 
 var app = express();
 
@@ -42,13 +46,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/json/customers', customerRest);
+app.use('/json/order', orderREST);
+app.use('/json/employee',employeeREST);
+app.use('/json/categories',categoryREST);
+app.use('/json/products',productREST);
 app.use('/', routes);
-app.use('/customer', customerRest);
-app.use('/customers', customer);
-app.use('/order', order);
+app.use('/customers', customerUI);
+app.use('/order',orderUI);
 app.use('/orderdetails', orderdetails);
-app.use('/employee',employee);
-app.use('/products',product);
+app.use('/employee',employeeUI);
+app.use('/products',productUI);
 app.use('/categories',category);
 
 // catch 404 and forward to error handler
