@@ -1,10 +1,8 @@
 function populateProductsTable(catId) {
-
-    if (catId == null) {
-        // Empty content string
+    function jsonGet(path, sort) {
         var tableContent = '';
         // jQuery AJAX call for JSON
-        $.getJSON('/json/products', function (data) {
+        $.getJSON(path, function (data) {
             function compare(a, b) {
                 if (a._id < b._id)
                     return -1;
@@ -12,9 +10,9 @@ function populateProductsTable(catId) {
                     return 1;
                 return 0;
             }
-
-            console.log(data);
-            data.sort(compare);
+            if(sort) {
+                data.sort(compare);
+            }
             $.each(data, function () {
                 tableContent += '<tr>';
                 tableContent += '<td>' + this._id + '</td>';
@@ -25,43 +23,18 @@ function populateProductsTable(catId) {
                 tableContent += '<td>' + this.quantityPerUnit + '</td>';
                 tableContent += '<td>' + this.unitsOnOrder + '</td>';
                 tableContent += '<td>' + this.reorderLevel + '</td>';
+                // since I'm sorting I know I'm not using the function with an id
+                // the editing function can't handle parameters like that
+                if(sort) {
+                    tableContent += editAndDelete("/json/products/" + this._id, "populateProductsTable");
+                }
                 tableContent += '</tr>';
             });
             // Inject the whole content string into our existing HTML table
             $('#tableViewer table tbody').html(tableContent);
         });
     }
-    else {
-        // Empty content string
-        var tableContent = '';
-        // jQuery AJAX call for JSON
-        $.getJSON('/json/products/' + catId, function (data) {
-            function compare(a, b) {
-                if (a._id < b._id)
-                    return -1;
-                if (a._id > b._id)
-                    return 1;
-                return 0;
-            }
-
-            console.log(data);
-            // data.sort(compare);
-            $.each(data, function () {
-                tableContent += '<tr>';
-                tableContent += '<td>' + this._id + '</td>';
-                tableContent += '<td>' + this.name + '</td>';
-                tableContent += '<td>' + this.categoryId + '</td>';
-                tableContent += '<td>' + this.unitPrice + '</td>';
-                tableContent += '<td>' + this.unitsInStock + '</td>';
-                tableContent += '<td>' + this.quantityPerUnit + '</td>';
-                tableContent += '<td>' + this.unitsOnOrder + '</td>';
-                tableContent += '<td>' + this.reorderLevel + '</td>';
-                tableContent += '</tr>';
-            });
-            // Inject the whole content string into our existing HTML table
-            $('#tableViewer table tbody').html(tableContent);
-        });
-    }
+    catId ? jsonGet('/json/products/' + catId) :  jsonGet('/json/products', true);
 }
 
 function populateCategoryTable() {
@@ -83,6 +56,7 @@ function populateCategoryTable() {
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.name + '</td>';
             tableContent += '<td>' + this.description + '</td>';
+            tableContent += editAndDelete("/json/categories/" + this._id, "populateCategoryTable");
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -109,6 +83,7 @@ function populateCustomersTable() {
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.companyName + '</td>';
             tableContent += '<td>' + this.contactName + '</td>';
+            tableContent += editAndDelete("/json/customers/" + this._id, "populateCustomersTable");
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -128,12 +103,12 @@ function deleteObject(path, func) {
 
 function createEditPage(path) {
     $.getJSON(path, function (data) {
-        console.log("hhiii");
         $('#tableViewer table tbody').html("");
         var htmlContent = "";
         for(var para in data) {
             htmlContent += para + '<br><input type="text" name="\'' + para + '\'" name="\'' + data[para] + '\'" ><br>';
         }
+
         $('#editStuff div').html(htmlContent);
     });
 }
@@ -169,6 +144,7 @@ function populateEmployeesTable() {
             tableContent += '<td>' + this.lastName + '</td>';
             tableContent += '<td>' + this.firstName + '</td>';
             tableContent += '<td>' + this.title + '</td>';
+            tableContent += editAndDelete("/json/employee/" + this._id, "populateEmployeesTable");
         });
         $('#tableViewer table tbody').html(tableContent);
     });
@@ -192,7 +168,7 @@ function populateOrderTable() {
             tableContent += '<td>' + this.orderDate + '</td>';
             tableContent += '<td>' + this.shipName + '</td>';
             tableContent += '<td>' + this.shipAddress + '</td>';
-            tableContent += editAndDelete("/order/" + this._id, "populateOrderTable");
+            tableContent += editAndDelete("/json/order/" + this._id, "populateOrderTable");
             tableContent += '</tr>';
         });
         $('#tableViewer table tbody').html(tableContent);
