@@ -4,7 +4,7 @@ function populateProductsTable(catId) {
         // Empty content string
         var tableContent = '';
         // jQuery AJAX call for JSON
-        $.getJSON('/products/all', function (data) {
+        $.getJSON('/json/products', function (data) {
             function compare(a, b) {
                 if (a._id < b._id)
                     return -1;
@@ -13,6 +13,7 @@ function populateProductsTable(catId) {
                 return 0;
             }
 
+            console.log(data);
             data.sort(compare);
             $.each(data, function () {
                 tableContent += '<tr>';
@@ -30,11 +31,11 @@ function populateProductsTable(catId) {
             $('#tableViewer table tbody').html(tableContent);
         });
     }
-    else{
+    else {
         // Empty content string
         var tableContent = '';
         // jQuery AJAX call for JSON
-        $.getJSON('/products/'+catId, function (data) {
+        $.getJSON('/json/products/' + catId, function (data) {
             function compare(a, b) {
                 if (a._id < b._id)
                     return -1;
@@ -43,7 +44,8 @@ function populateProductsTable(catId) {
                 return 0;
             }
 
-            data.sort(compare);
+            console.log(data);
+            // data.sort(compare);
             $.each(data, function () {
                 tableContent += '<tr>';
                 tableContent += '<td>' + this._id + '</td>';
@@ -66,7 +68,7 @@ function populateCategoryTable() {
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/categories/all', function (data) {
+    $.getJSON('/json/categories/', function (data) {
         function compare(a, b) {
             if (a._id < b._id)
                 return -1;
@@ -92,7 +94,7 @@ function populateCustomersTable() {
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/customer/', function (data) {
+    $.getJSON('/json/customers/', function (data) {
         function compare(a, b) {
             if (a._id < b._id)
                 return -1;
@@ -103,7 +105,7 @@ function populateCustomersTable() {
 
         data.sort(compare);
         $.each(data, function () {
-            tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/customer/" + this._id + "'" + '"' + '>';
+            tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/customers/" + this._id + "'" + '"' + '>';
             tableContent += '<td>' + this._id + '</td>';
             tableContent += '<td>' + this.companyName + '</td>';
             tableContent += '<td>' + this.contactName + '</td>';
@@ -151,7 +153,7 @@ function populateEmployeesTable() {
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/employee/all', function (data) {
+    $.getJSON('/json/employee', function (data) {
         function compare(a, b) {
             if (a._id < b._id)
                 return -1;
@@ -168,16 +170,13 @@ function populateEmployeesTable() {
             tableContent += '<td>' + this.firstName + '</td>';
             tableContent += '<td>' + this.title + '</td>';
         });
-        // Inject the whole content string into our existing HTML table
         $('#tableViewer table tbody').html(tableContent);
     });
 }
 
 function populateOrderTable() {
-    // Empty content string
     var tableContent = '';
-    // jQuery AJAX call for JSON
-    $.getJSON('/order', function (data) {
+    $.getJSON('/json/order', function (data) {
         function compare(a, b) {
             if (a._id > b._id)
                 return -1;
@@ -196,15 +195,12 @@ function populateOrderTable() {
             tableContent += editAndDelete("/order/" + this._id, "populateOrderTable");
             tableContent += '</tr>';
         });
-        // Inject the whole content string into our existing HTML table
         $('#tableViewer table tbody').html(tableContent);
     });
 }
 
 function fillOrderDetails() {
-    // Empty content string
     var tableContent = '';
-    // jQuery AJAX call for JSON
     var path = window.location.pathname.split('/');
     $.getJSON('/orderdetails/' + path[2], function (data) {
         $("#ID").text("ID: " + data.order._id);
@@ -212,15 +208,10 @@ function fillOrderDetails() {
         $("#requ").text("Required: " + data.order.requiredDate);
         $("#ship").text("Shipped: " + data.order.shippedDate);
         $("#employee").text(data.employee.firstName + ' ' + data.employee.lastName).prop('href', '/employee/' + data.employee._id);
-        $("#name").text(data.customer.companyName).prop('href', '/customer/' + data.customer._id);
+        $("#name").text(data.customer.companyName).prop('href', '/customers/' + data.customer._id);
         $("#addr").text("Address: " + data.customer.address)
         $("#zip").text("Post Code: " + data.customer.postalCode);
         $("#country").text("Country: " + data.customer.country);
-
-        //solution: get all the info from the data
-        //each piece of info will be a paragraph handled in the javascript
-        //the paragraphs will be "hard coded" p1 = "ID: " + data.id;
-        //gl hf
         var total = 0;
         $.each(data.orderDetails, function (index, value) {
             total += (value.unitPrice - value.unitPrice * value.discount) * value.quantity;
@@ -246,7 +237,7 @@ function fillOrderDetails() {
 function getDetailsAboutEmployee() {
     var ar = document.URL.split('/');
     var id = ar[ar.length - 1];
-    $.getJSON('getemployee/' + id, function (data) {
+    $.getJSON('/json/employee/' + id, function (data) {
         var add = "";
         add += "<tr>";
         add += "<td>First Name: </td>";
@@ -314,12 +305,12 @@ function getDetailsAboutUser() {
     var id = ar[ar.length - 1];
     var idOfCust;
 
-    $.getJSON('getcustomer/' + id, function (data) {
+    $.getJSON('/json/customers/' + id, function (data) {
         var add = "";
         add += "<tr>";
         add += "<td>Name: </td>";
         add += "<td>" + data._id + "</td>";
-        idOfCust=data._id;
+        idOfCust = data._id;
         add += "</tr>";
         add += "<tr>";
         add += "<td>City: </td>";
@@ -366,7 +357,7 @@ function getDetailsAboutUser() {
         $.getJSON('/orderdetails/customer/' + idOfCust, function (data) {
             console.log(idOfCust)
             console.log(data);
-            var tableContent="";
+            var tableContent = "";
             $.each(data, function (index, value) {
                 tableContent += '<tr>';
                 tableContent += '<td>' + value._id + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
