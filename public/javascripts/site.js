@@ -27,7 +27,7 @@ function populateProductsTable(catId) {
                 tableContent += '</tr>';
             });
             // Inject the whole content string into our existing HTML table
-            $('#productsViewer table tbody').html(tableContent);
+            $('#tableViewer table tbody').html(tableContent);
         });
     }
     else{
@@ -57,7 +57,7 @@ function populateProductsTable(catId) {
                 tableContent += '</tr>';
             });
             // Inject the whole content string into our existing HTML table
-            $('#productsViewer table tbody').html(tableContent);
+            $('#tableViewer table tbody').html(tableContent);
         });
     }
 }
@@ -84,7 +84,7 @@ function populateCategoryTable() {
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
-        $('#productsViewer table tbody').html(tableContent);
+        $('#tableViewer table tbody').html(tableContent);
     });
 }
 
@@ -110,7 +110,7 @@ function populateCustomersTable() {
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
-        $('#customerViewer table tbody').html(tableContent);
+        $('#tableViewer table tbody').html(tableContent);
     });
 }
 
@@ -124,9 +124,21 @@ function deleteObject(path, func) {
     });
 }
 
+function createEditPage(path) {
+    $.getJSON(path, function (data) {
+        console.log("hhiii");
+        $('#tableViewer table tbody').html("");
+        var htmlContent = "";
+        for(var para in data) {
+            htmlContent += para + '<br><input type="text" name="\'' + para + '\'" name="\'' + data[para] + '\'" ><br>';
+        }
+        $('#editStuff div').html(htmlContent);
+    });
+}
+
 function editAndDelete(path, func) {
     var tableContent = '';
-    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" ><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" onclick="createEditPage(\'' + path + '\')"><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
     tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" onclick="deleteObject(\'' + path + '\' ,\'' + func + '\')"><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
     return tableContent;
 }
@@ -157,7 +169,7 @@ function populateEmployeesTable() {
             tableContent += '<td>' + this.title + '</td>';
         });
         // Inject the whole content string into our existing HTML table
-        $('#employeesViewer table tbody').html(tableContent);
+        $('#tableViewer table tbody').html(tableContent);
     });
 }
 
@@ -185,7 +197,7 @@ function populateOrderTable() {
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
-        $('#orderViewer table tbody').html(tableContent);
+        $('#tableViewer table tbody').html(tableContent);
     });
 }
 
@@ -227,7 +239,7 @@ function fillOrderDetails() {
         tableContent += '<td> </td>';
         tableContent += '<td>' + total.toFixed(2) + ' </td>';
         tableContent += '</tr>';
-        $('#productsViewer table tbody').html(tableContent);
+        $('#tableViewer table tbody').html(tableContent);
     });
 }
 
@@ -373,7 +385,7 @@ function getDetailsAboutUser() {
                 tableContent += '</tr>';
             });
             console.log(tableContent);
-            $('#orderViewer table tbody').html(tableContent);
+            $('#tableViewer table tbody').html(tableContent);
         });
     });
     console.log(idOfCust);

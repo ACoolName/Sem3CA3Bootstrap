@@ -10,4 +10,8 @@ router.get('/documentation', function(req, res) {
    res.render('documentation');
 });
 
+router.get('/edit', function(req, res) {
+    res.render('edit');
+});
+
 module.exports = router;
