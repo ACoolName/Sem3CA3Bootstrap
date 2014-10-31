@@ -12,15 +12,15 @@ describe('Product Model Helper Class', function () {
         })
     });
     describe('get', function () {
-        it('Should return a product when using valid id', function (done) {
+        it('Should return a list of products', function (done) {
             Product.get(2, function (err, p) {
-                should.exist(p);
+                p.length.should.equal(1);
                 done();
             });
         });
-        it('Should return null when using invalid id', function (done) {
+        it('Should return an empty list', function (done) {
             Product.get(-99, function (err, p) {
-                should.not.exist(p);
+                p.length.should.equal(0);
                 done();
             });
         })

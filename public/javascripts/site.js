@@ -1,10 +1,9 @@
 function populateProductsTable(catId) {
-
-    if (catId == null) {
+    function getJson(path, sort) {
         // Empty content string
         var tableContent = '';
         // jQuery AJAX call for JSON
-        $.getJSON('/json/products', function (data) {
+        $.getJSON(path, function (data) {
             function compare(a, b) {
                 if (a._id < b._id)
                     return -1;
@@ -12,9 +11,9 @@ function populateProductsTable(catId) {
                     return 1;
                 return 0;
             }
-
-            console.log(data);
-            data.sort(compare);
+            if(sort) {
+                data.sort(compare);
+            }
             $.each(data, function () {
                 tableContent += '<tr>';
                 tableContent += '<td>' + this._id + '</td>';
@@ -31,37 +30,7 @@ function populateProductsTable(catId) {
             $('#productsViewer table tbody').html(tableContent);
         });
     }
-    else {
-        // Empty content string
-        var tableContent = '';
-        // jQuery AJAX call for JSON
-        $.getJSON('/json/products/' + catId, function (data) {
-            function compare(a, b) {
-                if (a._id < b._id)
-                    return -1;
-                if (a._id > b._id)
-                    return 1;
-                return 0;
-            }
-
-            console.log(data);
-            // data.sort(compare);
-            $.each(data, function () {
-                tableContent += '<tr>';
-                tableContent += '<td>' + this._id + '</td>';
-                tableContent += '<td>' + this.name + '</td>';
-                tableContent += '<td>' + this.categoryId + '</td>';
-                tableContent += '<td>' + this.unitPrice + '</td>';
-                tableContent += '<td>' + this.unitsInStock + '</td>';
-                tableContent += '<td>' + this.quantityPerUnit + '</td>';
-                tableContent += '<td>' + this.unitsOnOrder + '</td>';
-                tableContent += '<td>' + this.reorderLevel + '</td>';
-                tableContent += '</tr>';
-            });
-            // Inject the whole content string into our existing HTML table
-            $('#productsViewer table tbody').html(tableContent);
-        });
-    }
+    catId ? getJson('/json/products/' + catId) : getJson('/json/products', sort);
 }
 
 function populateCategoryTable() {
@@ -117,6 +86,7 @@ function populateCustomersTable() {
 }
 
 function deleteObject(path, func) {
+    console.log("hiii");
     $.ajax({
         url: path,
         type: 'DELETE',
@@ -180,7 +150,7 @@ function populateOrderTable() {
             tableContent += '<td>' + this.orderDate + '</td>';
             tableContent += '<td>' + this.shipName + '</td>';
             tableContent += '<td>' + this.shipAddress + '</td>';
-            tableContent += editAndDelete("/order/" + this._id, "populateOrderTable");
+            tableContent += editAndDelete("/json/order/" + this._id, "populateOrderTable");
             tableContent += '</tr>';
         });
         $('#orderViewer table tbody').html(tableContent);

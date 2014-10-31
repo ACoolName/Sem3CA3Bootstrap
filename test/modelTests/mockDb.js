@@ -79,7 +79,7 @@ function getProducts(products) {
         return {
             _id: product.productID,
             name: product.productName,
-            category: product.categoryID,
+            categoryId: product.categoryID,
             quantityPerUnit: product.quantityPerUnit,
             unitPrice: product.unitPrice,
             unitsInStock: product.unitsInStock,
@@ -94,7 +94,7 @@ function getOrderDetails(order_details) {
     return order_details.map(function(e) {
         return {
             orderId: e.orderID,
-            product: e.productID,
+            productId: e.productID,
             unitPrice: e.unitPrice,
             quantity: e.quantity,
             discount: e.discount
@@ -106,8 +106,8 @@ function getOrders(orders) {
     return orders.map(function(e) {
         return {
             _id: e.orderID,
-            customer: e.customerID,
-            employee: e.employeeID,
+            customerId: e.customerID,
+            employeeId: e.employeeID,
             orderDate: e.orderDate.substring(0, 10),
             requiredDate: e.requiredDate.substring(0, 10),
             shippedDate: e.shippedDate.substring(0, 10),
