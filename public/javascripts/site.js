@@ -12,6 +12,7 @@ function populateProductsTable(catId) {
                     return 1;
                 return 0;
             }
+
             console.log(data);
             data.sort(compare);
             $.each(data, function () {
@@ -30,11 +31,11 @@ function populateProductsTable(catId) {
             $('#productsViewer table tbody').html(tableContent);
         });
     }
-    else{
+    else {
         // Empty content string
         var tableContent = '';
         // jQuery AJAX call for JSON
-        $.getJSON('/json/products/'+catId, function (data) {
+        $.getJSON('/json/products/' + catId, function (data) {
             function compare(a, b) {
                 if (a._id < b._id)
                     return -1;
@@ -42,8 +43,9 @@ function populateProductsTable(catId) {
                     return 1;
                 return 0;
             }
-                console.log(data);
-           // data.sort(compare);
+
+            console.log(data);
+            // data.sort(compare);
             $.each(data, function () {
                 tableContent += '<tr>';
                 tableContent += '<td>' + this._id + '</td>';
@@ -146,15 +148,12 @@ function populateEmployeesTable() {
             tableContent += '<td>' + this.firstName + '</td>';
             tableContent += '<td>' + this.title + '</td>';
         });
-        // Inject the whole content string into our existing HTML table
         $('#employeesViewer table tbody').html(tableContent);
     });
 }
 
 function populateOrderTable() {
-    // Empty content string
     var tableContent = '';
-    // jQuery AJAX call for JSON
     $.getJSON('/json/order', function (data) {
         function compare(a, b) {
             if (a._id > b._id)
@@ -174,15 +173,12 @@ function populateOrderTable() {
             tableContent += editAndDelete();
             tableContent += '</tr>';
         });
-        // Inject the whole content string into our existing HTML table
         $('#orderViewer table tbody').html(tableContent);
     });
 }
 
 function fillOrderDetails() {
-    // Empty content string
     var tableContent = '';
-    // jQuery AJAX call for JSON
     var path = window.location.pathname.split('/');
     $.getJSON('/orderdetails/' + path[2], function (data) {
         $("#ID").text("ID: " + data.order._id);
@@ -194,11 +190,6 @@ function fillOrderDetails() {
         $("#addr").text("Address: " + data.customer.address)
         $("#zip").text("Post Code: " + data.customer.postalCode);
         $("#country").text("Country: " + data.customer.country);
-
-        //solution: get all the info from the data
-        //each piece of info will be a paragraph handled in the javascript
-        //the paragraphs will be "hard coded" p1 = "ID: " + data.id;
-        //gl hf
         var total = 0;
         $.each(data.orderDetails, function (index, value) {
             total += (value.unitPrice - value.unitPrice * value.discount) * value.quantity;
@@ -297,7 +288,7 @@ function getDetailsAboutUser() {
         add += "<tr>";
         add += "<td>Name: </td>";
         add += "<td>" + data._id + "</td>";
-        idOfCust=data._id;
+        idOfCust = data._id;
         add += "</tr>";
         add += "<tr>";
         add += "<td>City: </td>";
@@ -344,7 +335,7 @@ function getDetailsAboutUser() {
         $.getJSON('/orderdetails/customer/' + idOfCust, function (data) {
             console.log(idOfCust)
             console.log(data);
-            var tableContent="";
+            var tableContent = "";
             $.each(data, function (index, value) {
                 tableContent += '<tr>';
                 tableContent += '<td>' + value._id + '</td>';     //this needs to be changed to product name after Tobias' push and our merge
