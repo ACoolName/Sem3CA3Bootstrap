@@ -10,6 +10,15 @@ html
     script(src='/javascripts/jquery.js')
 
   body
+    div(class="modal fade",tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', id="confirm-delete")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header") Are you sure?
+          div(class="modal-body") Are you sure you want to delete this? It is irreversible.
+          div.modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Cancel
+            a.btn.btn-danger.danger(data-dismiss="modal") Delete
+
     nav.navbar.navbar-default(role="navigation")
       .container-fluid
         #bs-example-navbar-collapse-1.collapse.navbar-collapse

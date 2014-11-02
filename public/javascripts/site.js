@@ -45,7 +45,6 @@ function populateCategoryTable() {
                 return 1;
             return 0;
         }
-
         data.sort(compare);
         $.each(data, function () {
             tableContent += '<tr' + ' onclick=' + '"location.href=' + "'/products/category/" + this._id + "'" + '"' + '>';
@@ -96,10 +95,16 @@ function deleteObject(path, func) {
     });
 }
 
+
+function escape_q(str){
+    return str.replace(/"/g, '\\\"');
+}
+
 function editAndDelete(path, func) {
     var tableContent = '';
     tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" ><span class="glyphicon glyphicon-edit"></span></button>' + '</td>';
-    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" onclick="deleteObject(\'' + path + '\' ,\'' + func + '\')"><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
+    tableContent += '<td>' + '<button type="button" class="btn btn-default btn-lg" data-val-path="'+ path  + '" data-val-func="'+ func  + '" data-toggle="modal" data-target="#confirm-delete" ><span class="glyphicon glyphicon-remove-circle"></span></button>' + '</td>';
+    //onclick="deleteObject(\'' + path + '\' ,\'' + func + '\')"
     return tableContent;
 }
 
@@ -142,7 +147,6 @@ function populateOrderTable() {
                 return 1;
             return 0;
         }
-
         data.sort(compare);
         $.each(data, function () {
             tableContent += '<tr>';
@@ -154,6 +158,16 @@ function populateOrderTable() {
             tableContent += '</tr>';
         });
         $('#orderViewer table tbody').html(tableContent);
+    });
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+	var box = this;
+	var ev = $(e.relatedTarget);
+	var path = ev.attr("data-val-path");
+	var func = ev.attr("data-val-func");
+	$(this).find('.danger').click(function (){
+	    console.log(path + func);
+	    deleteObject(path, func);
+	});
     });
 }
 
